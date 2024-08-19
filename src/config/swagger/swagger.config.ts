@@ -7,7 +7,7 @@ export const swaggerConfig = new DocumentBuilder()
   .addServer('http://localhost:3000', 'Local environment')
   .addApiKey(
     { type: 'apiKey', name: 'x-api-key', in: 'header' },
-    'API Gateway Key',
+    'api-gateway-key',
   )
   .addTag('Health Check')
   .addTag('Auth')
