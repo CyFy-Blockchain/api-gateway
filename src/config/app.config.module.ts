@@ -4,10 +4,12 @@ import databaseConfig from './ormconfig';
 import { ServerHealthCheckModule } from 'src/modules/server-health-check/server-health-check.module';
 import { RouterModule } from '@nestjs/core';
 import { AuthModule } from 'src/modules/auth/auth.module';
+import { NestConfigModule } from './nest.config.module';
 
 @Module({
   imports: [
     // TypeOrmModule.forRoot(databaseConfig),
+    NestConfigModule,
     ServerHealthCheckModule,
     AuthModule,
     RouterModule.register([
