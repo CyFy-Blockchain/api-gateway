@@ -1,15 +1,19 @@
 import { Body, Controller, Post } from '@nestjs/common';
 import { SWAGGER_TAGS } from 'src/config/swagger/tags';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { SignUpDto } from '../dto/auth.dto';
+import { LoginDto, LoginResponse, SignUpDto } from '../dto/auth.dto';
 import { lastValueFrom } from 'rxjs';
 import { AuthClientService } from '../libs/grpc.auth.lib';
 import { handleGrpcError } from '../../../utils/grpc.utils';
+import { AuthService } from '../services/auth.service';
 
 @ApiTags(SWAGGER_TAGS.AUTH)
 @Controller()
 export class AuthController {
-  constructor(private readonly grpcAuthClientService: AuthClientService) {}
+  constructor(
+    private readonly grpcAuthClientService: AuthClientService,
+    private readonly authService: AuthService,
+  ) {}
 
   /**
    * Signs up a new user using the AuthClientService's signup method.
@@ -28,6 +32,29 @@ export class AuthController {
       return signupResponse;
     } catch (error) {
       console.error('🚀 ~ HeroesController ~ createHero ~ error:', error);
+      handleGrpcError(error);
+    }
+  }
+
+  /**
+   * Logs in a user using the AuthClientService's login method.
+   * @param loginInput The input data containing the user's login credentials.
+   * @returns A LoginResponse object containing the user's authentication token and other relevant information upon successful login.
+   * @throws An error if the login operation fails.
+   */
+  @Post('login')
+  @ApiOperation({ summary: 'Login user' })
+  @ApiResponse({ status: 200, description: 'Success.', type: LoginResponse }) // Adjust the type as needed
+  @ApiResponse({ status: 403, description: 'Forbidden.' })
+  async login(@Body() loginInput: LoginDto): Promise<LoginResponse> {
+    try {
+      const loginResponse = await lastValueFrom(
+        this.grpcAuthClientService.login(loginInput),
+      );
+      await this.authService.loginEntry(loginResponse);
+      return loginResponse;
+    } catch (error) {
+      console.error('🚀 ~ AuthController ~ login ~ error:', error);
       handleGrpcError(error);
     }
   }
