@@ -9,6 +9,4 @@ export const swaggerConfig = new DocumentBuilder()
     { type: 'apiKey', name: 'x-api-key', in: 'header' },
     'api-gateway-key',
   )
-  .addTag('Health Check')
-  .addTag('Auth')
   .build();
