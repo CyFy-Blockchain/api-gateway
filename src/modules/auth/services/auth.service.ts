@@ -2,10 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { CACHE_MANAGER, Cache } from '@nestjs/cache-manager';
 import { LoginResponse } from '../dto/auth.dto';
 import { generateUuidV4 } from '../libs/auth.uuid.utils';
-import {
-  fifteenDaysToMilliseconds,
-  oneDayToMilliseconds,
-} from '../libs/auth.redis.util';
+import { daysToMilliseconds } from '../libs/auth.redis.util';
 
 @Injectable()
 export class AuthService {
@@ -18,12 +15,12 @@ export class AuthService {
       await this.cacheManager.set(
         accessKey,
         data.userId,
-        oneDayToMilliseconds(),
+        daysToMilliseconds(1),
       );
       await this.cacheManager.set(
         refreshKey,
         data.userId,
-        fifteenDaysToMilliseconds(),
+        daysToMilliseconds(15),
       );
       return true;
     } catch (error) {

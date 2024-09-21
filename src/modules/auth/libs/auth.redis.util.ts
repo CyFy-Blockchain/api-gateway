@@ -1,20 +1,12 @@
 /**
- * Converts 1 day to milliseconds.
+ * Converts a given number of days to milliseconds.
  *
- * This function calculates the number of milliseconds in a single day.
+ * This function calculates the number of milliseconds for any number of days.
  * It is useful for time-related calculations and conversions.
  *
- * @returns The number of milliseconds in a day.
+ * @param days The number of days to convert to milliseconds.
+ * @returns The number of milliseconds in the specified number of days.
  */
-export const oneDayToMilliseconds = (): number => {
-  return 24 * 60 * 60 * 1000;
-};
-
-/**
- * Converts 15 days to milliseconds.
- *
- * @returns The number of milliseconds in 15 days.
- */
-export const fifteenDaysToMilliseconds = (): number => {
-  return 15 * 24 * 60 * 60 * 1000;
+export const daysToMilliseconds = (days: number): number => {
+  return days * 24 * 60 * 60 * 1000;
 };
