@@ -5,7 +5,6 @@ import { ServerHealthCheckModule } from 'src/modules/server-health-check/server-
 import { RouterModule } from '@nestjs/core';
 
 import { AuthModule } from 'src/modules/auth/auth.module';
-import { NestConfigModule } from './nest.config.module';
 
 @Module({
   imports: [
