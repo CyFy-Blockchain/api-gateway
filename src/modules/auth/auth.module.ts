@@ -1,10 +1,13 @@
 import { Module } from '@nestjs/common';
+
 import { AuthController } from './controllers/auth.controller';
-import { AuthService } from './services/auth.services';
+import { AuthClientService } from './libs/grpc.auth.lib';
+import { AuthService } from './services/auth.service';
+import { RedisCacheModule } from '../data-sources/modules/redis/redis-cache.module';
 
 @Module({
-  imports: [],
+  imports: [RedisCacheModule],
   controllers: [AuthController],
-  providers: [AuthService],
+  providers: [AuthClientService, AuthService],
 })
 export class AuthModule {}

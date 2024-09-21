@@ -1,7 +1,9 @@
 import { Controller, Get } from '@nestjs/common';
-import { ServerHealthCheckService } from '../services/server-health-check.services';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { SWAGGER_TAGS } from 'src/config/swagger/tags';
+
+import { ServerHealthCheckService } from '../services/server-health-check.services';
+import { ServerHealthCheckResponse } from '../dto/server-health-check.dto';
 
 @ApiTags(SWAGGER_TAGS.HEALTH_CHECK)
 @Controller()
@@ -16,7 +18,8 @@ export class ServerHealthCheckController {
    * @returns A string representing the server's health status.
    */
   @Get()
-  getHello(): string {
-    return this.serverHealthCheckService.getHello();
+  @ApiOperation({ summary: 'Server Health Check' })
+  getHello(): Promise<ServerHealthCheckResponse> {
+    return this.serverHealthCheckService.healthCheck();
   }
 }
