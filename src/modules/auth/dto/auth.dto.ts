@@ -1,43 +1,87 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsEnum, IsNotEmpty, IsOptional } from 'class-validator';
+import { UserDto, UserRole } from './user.dto';
 
-export class SignUpDto {
-  @ApiProperty({ description: 'The name of the user.', example: 'John Doe' })
-  @IsNotEmpty({ message: 'Username is required' })
-  @IsString({ message: 'Username must be a string' })
-  username: string;
+// POST -> Sign in user
+export class SigninUserResponse {
+  @ApiProperty({
+    example: 'bc649a94-0300-4136-aa4a-0fc51f581ab4',
+    required: true,
+  })
+  token: string;
 
   @ApiProperty({
-    description: 'The password of the user.',
-    example: 'Abcd@1234',
+    example: '2d620505-e413-4d18-8877-b9fa3c484905',
+    required: true,
   })
-  @IsNotEmpty({ message: 'Password is required' })
-  @IsString({ message: 'Password must be a string' })
+  refreshToken: string;
+
+  @ApiProperty({ example: 'HOD', required: true })
+  @IsNotEmpty()
+  position: string;
+}
+
+export class SigninUserRequest {
+  @ApiProperty({ example: 'org1', required: true })
+  @IsNotEmpty()
+  orgName: string;
+
+  @ApiProperty({ example: 'testUser', required: true })
+  @IsNotEmpty()
+  username: string;
+
+  @ApiProperty({ example: 'password', required: true })
+  @IsNotEmpty()
   password: string;
 }
 
-export class LoginDto {
+// GET -> Fetch User List in Org
+export class GetOrgUsersListResponse {
   @ApiProperty({
-    description: 'The username of the user.',
-    example: 'JohnDoe',
+    description: 'Array of users',
+    type: [UserDto],
   })
-  @IsNotEmpty({ message: 'Username is required' })
-  @IsString({ message: 'Username must be a string' })
+  users: UserDto[];
+
+  @ApiProperty({
+    description: 'Total count of users',
+    example: 10,
+  })
+  count: number;
+}
+
+// POST -> Register User
+export class RegisterUserRequest {
+  @ApiProperty({ example: 'testUser', required: true })
+  @IsNotEmpty()
   username: string;
 
   @ApiProperty({
-    description: 'The password of the user.',
-    example: 'Abcd@1234',
+    example: UserRole.Client,
+    enum: UserRole,
+    default: UserRole.Client,
   })
-  @IsNotEmpty({ message: 'Password is required' })
-  @IsString({ message: 'Password must be a string' })
-  password: string;
+  @IsEnum(UserRole)
+  userRole: UserRole;
+
+  @ApiProperty({
+    example: 'HOD,Teacher,CS',
+    description:
+      'This defines the attributes the user can forward to any certificate it creates. This is only used if passed with userRole: admin. Clients can not create users',
+  })
+  @IsOptional()
+  attr: string;
+
+  @ApiProperty({ example: 'Computer Science', required: true })
+  @IsNotEmpty()
+  deptName: string;
+
+  @ApiProperty({ example: 'HOD', required: true })
+  @IsNotEmpty()
+  position: string;
 }
 
-export class LoginResponse {
-  @ApiProperty({
-    description: 'The Id of the user.',
-    example: '123-456-789',
-  })
-  userId: string;
+export class RegisterUserResponse {
+  @ApiProperty({ example: 'pswrd', required: true })
+  secret: string;
 }

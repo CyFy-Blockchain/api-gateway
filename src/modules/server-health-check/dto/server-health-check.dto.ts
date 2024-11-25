@@ -1,4 +1,3 @@
 export class ServerHealthCheckResponse {
-    nestServerCheck: string;
-    redisServerCheck: string;
-  }
+  nestServerCheck: string;
+}
