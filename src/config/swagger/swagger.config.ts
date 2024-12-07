@@ -6,8 +6,4 @@ export const swaggerConfig = new DocumentBuilder()
   .setVersion('1.0.0')
   .addServer('http://localhost:3000', 'Local environment')
   .addServer('https://api-gateway-990q.onrender.com/', 'Dev enviroment')
-  .addApiKey(
-    { type: 'apiKey', name: 'x-api-key', in: 'header' },
-    'api-gateway-key',
-  )
   .build();

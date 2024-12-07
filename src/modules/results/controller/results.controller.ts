@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Req } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Req } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { SWAGGER_TAGS } from 'src/config/swagger/tags';
 import { SwaggerAuth } from 'src/utils/decorators/swaggerAuth.decorator';
@@ -8,15 +8,47 @@ import {
   GetResultWorkflowResponse,
   PostResultWorkflowRequest,
 } from '../dto/results-workflow.dto';
+import { UploadResultRequest, UploadResultResponse } from '../dto/results.dto';
 
 @ApiTags(SWAGGER_TAGS.RESULTS)
 @Controller()
 export class ResultsController {
-  @Get('/workflow')
-  @ApiOperation({ summary: 'Fetch all results in the contract' })
+  @Get('/:deptName')
+  @ApiOperation({ summary: 'Fetch result by department' })
   @ApiResponse({
-    status: 201,
-    description: 'Fetch the results from the contract',
+    status: 200,
+    description: 'Fetch the results in a department',
+  })
+  @SwaggerAuth()
+  async fetchResultsByDept(
+    @Param('deptName') deptName: string,
+    @Req() request: Request,
+  ) {
+    const fabricToken = request.headers['fabricToken'] as string;
+    return await fabricClient.fetchResult(fabricToken, deptName);
+  }
+
+  @Post('/')
+  @ApiOperation({ summary: 'Upload a new result' })
+  @ApiResponse({
+    status: 200,
+    description: 'Upload a new result in a department',
+    type: UploadResultResponse,
+  })
+  @SwaggerAuth()
+  async uploadResultToDept(
+    @Body() body: UploadResultRequest,
+    @Req() request: Request,
+  ): Promise<UploadResultResponse> {
+    const fabricToken = request.headers['fabricToken'] as string;
+    return await fabricClient.uploadResult(fabricToken, body);
+  }
+
+  @Get('/workflow')
+  @ApiOperation({ summary: 'Fetch all result workflows in the contract' })
+  @ApiResponse({
+    status: 200,
+    description: 'Fetch the result workflows from the contract',
     type: GetResultWorkflowResponse,
   })
   @SwaggerAuth()
@@ -28,7 +60,7 @@ export class ResultsController {
   }
 
   @Post('/workflow')
-  @ApiOperation({ summary: 'Post a new Result workflow' })
+  @ApiOperation({ summary: 'Post a new result workflow' })
   @ApiResponse({
     status: 201,
     description: 'Save the result workflow in the contract',

@@ -2,6 +2,7 @@ import axios, { AxiosInstance } from 'axios';
 import { envVar } from 'src/config/env/default';
 import { getHeaderAuthToken, translateAxiosError } from '../helper';
 import { PostResultWorkflowRequest } from 'src/modules/results/dto/results-workflow.dto';
+import { UploadResultRequest } from 'src/modules/results/dto/results.dto';
 
 const { fabric } = envVar;
 
@@ -34,6 +35,31 @@ class FabricClient {
     try {
       const response = await this.axiosInstance.post(
         `/api/v1/results/workflow`,
+        body,
+        getHeaderAuthToken(token),
+      );
+      return response.data;
+    } catch (err) {
+      translateAxiosError(err);
+    }
+  }
+
+  async fetchResult(token: string, deptName: string) {
+    try {
+      const response = await this.axiosInstance.get(
+        `/api/v1/results/${deptName}`,
+        getHeaderAuthToken(token),
+      );
+      return response.data;
+    } catch (err) {
+      translateAxiosError(err);
+    }
+  }
+
+  async uploadResult(token: string, body: UploadResultRequest) {
+    try {
+      const response = await this.axiosInstance.post(
+        `/api/v1/results`,
         body,
         getHeaderAuthToken(token),
       );
