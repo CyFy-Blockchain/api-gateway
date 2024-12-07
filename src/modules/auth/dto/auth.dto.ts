@@ -26,11 +26,11 @@ export class SigninUserRequest {
   @IsNotEmpty()
   orgName: string;
 
-  @ApiProperty({ example: 'testUser', required: true })
+  @ApiProperty({ example: 'admin', required: true })
   @IsNotEmpty()
   username: string;
 
-  @ApiProperty({ example: 'password', required: true })
+  @ApiProperty({ example: 'adminpw', required: true })
   @IsNotEmpty()
   password: string;
 }
@@ -70,7 +70,7 @@ export class RegisterUserRequest {
       'This defines the attributes the user can forward to any certificate it creates. This is only used if passed with userRole: admin. Clients can not create users',
   })
   @IsOptional()
-  attr: string;
+  attr?: string;
 
   @ApiProperty({ example: 'Computer Science', required: true })
   @IsNotEmpty()

@@ -11,6 +11,9 @@ import { AppModule } from '../app.module';
  */
 export async function initializeApp(): Promise<void> {
   const app = await NestFactory.create(AppModule);
+  // enable cors
+  app.enableCors();
+
   // Set global prefix for all routes
   app.setGlobalPrefix('api/v1');
 
