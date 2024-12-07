@@ -13,6 +13,7 @@ import { ServerHealthCheckModule } from 'src/modules/server-health-check/server-
 import { RouterModule } from '@nestjs/core';
 import { AuthModule } from 'src/modules/auth/auth.module';
 import { LoggerMiddleware } from 'src/middleware/logger/logger.middleware';
+import { ResultsModule } from 'src/modules/results/results.module';
 
 type NestModuleType =
   | Type<any>
@@ -41,6 +42,7 @@ function getModuleWithPath(
     TypeOrmModule.forRoot(databaseConfig),
     ...getModuleWithPath('server-health-check', ServerHealthCheckModule),
     ...getModuleWithPath('auth', AuthModule),
+    ...getModuleWithPath('results', ResultsModule),
   ],
 })
 export class AppConfigModule implements NestModule {

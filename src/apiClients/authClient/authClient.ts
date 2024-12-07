@@ -31,7 +31,6 @@ class AuthClient {
         '/api/v1/users/signin',
         { orgName, username, password },
       );
-      console.log(response);
       return response.data;
     } catch (err) {
       translateAxiosError(err);
@@ -69,10 +68,10 @@ class AuthClient {
     }
   }
 
-  async fetchFabricUuid(token: string): Promise<{ fabricUuid: string }> {
+  async fetchFabricUuid(token: string): Promise<{ fabricToken: string }> {
     try {
-      const response = await this.axiosInstance.get<{ fabricUuid: string }>(
-        `/api/v1/users/fabricToken`,
+      const response = await this.axiosInstance.get<{ fabricToken: string }>(
+        `/api/v1/users/fabric-token`,
         getHeaderAuthToken(token),
       );
       return response.data;
