@@ -10,7 +10,7 @@ export class TokenConversionGuard implements CanActivate {
     const fabricToken = await authClient.fetchFabricUuid(token);
 
     // Attach fabricToken to the request object
-    request.headers['fabricToken'] = fabricToken;
+    request.headers['fabricToken'] = fabricToken?.fabricToken;
 
     return true;
   }
