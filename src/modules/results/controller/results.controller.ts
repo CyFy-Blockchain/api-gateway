@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Req } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Put, Req } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { SWAGGER_TAGS } from 'src/config/swagger/tags';
 import { SwaggerAuth } from 'src/utils/decorators/swaggerAuth.decorator';
@@ -8,7 +8,11 @@ import {
   GetResultWorkflowResponse,
   PostResultWorkflowRequest,
 } from '../dto/results-workflow.dto';
-import { UploadResultRequest, UploadResultResponse } from '../dto/results.dto';
+import {
+  ManageResultRequest,
+  UploadResultRequest,
+  UploadResultResponse,
+} from '../dto/results.dto';
 
 @ApiTags(SWAGGER_TAGS.RESULTS)
 @Controller()
@@ -73,5 +77,21 @@ export class ResultsController {
   ): Promise<GetResultWorkflowResponse> {
     const fabricToken = request.headers['fabricToken'] as string;
     return await fabricClient.postResultWorkflow(fabricToken, body);
+  }
+
+  @Put('/manage/:result_id')
+  @ApiOperation({ summary: 'Manage a result' })
+  @ApiResponse({
+    status: 200,
+    description: 'Manage the result with the given ID',
+  })
+  @SwaggerAuth()
+  async manageResult(
+    @Param('result_id') result_id: string,
+    @Body() body: ManageResultRequest,
+    @Req() request: Request,
+  ) {
+    const fabricToken = request.headers['fabricToken'] as string;
+    return await fabricClient.manageResult(fabricToken, body, result_id);
   }
 }
