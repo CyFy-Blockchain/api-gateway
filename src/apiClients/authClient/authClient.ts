@@ -12,7 +12,7 @@ import {
 const { auth } = envVar;
 
 class AuthClient {
-  private axiosInstance: AxiosInstance;
+  private readonly axiosInstance: AxiosInstance;
 
   constructor() {
     this.axiosInstance = axios.create({

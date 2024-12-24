@@ -24,3 +24,10 @@ export class UploadResultResponse extends UploadResultRequest {
   @IsString()
   id: string;
 }
+
+// PUT -> result/:result_id
+export class ManageResultRequest {
+  @ApiProperty({ example: 'acknowledge', required: false })
+  @IsString()
+  action: string;
+}
