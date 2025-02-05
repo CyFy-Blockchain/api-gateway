@@ -39,7 +39,38 @@ export class PostResultWorkflowRequest {
 }
 
 // GET -> result/workflow
+class Rights {
+  @ApiProperty({ example: 'view' })
+  rights: string[];
+}
+
+class Position {
+  @ApiProperty({ example: 'Teacher' })
+  position: string;
+
+  @ApiProperty({ type: [Rights] })
+  rights: Rights[];
+}
+
 export class GetResultWorkflowResponse {
+  @ApiProperty({
+    example: [
+      {
+        position: 'Teacher',
+        rights: ['view', 'upload'],
+      },
+      {
+        position: 'DEAN',
+        rights: ['view', 'approve'],
+      },
+    ],
+    type: [Position],
+  })
+  CS: Position[];
+}
+
+// POST -> result/workflow
+export class PostResultWorkflowResponse extends PostResultWorkflowRequest {
   @ApiProperty({ example: 'workflow-12345', required: true })
   workflowId: string;
 }
