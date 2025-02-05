@@ -5,10 +5,7 @@ import { SwaggerAuth } from 'src/utils/decorators/swaggerAuth.decorator';
 import { fabricClient } from 'src/apiClients/fabricClient/fabricClient';
 import { Request } from 'express';
 import {
-  GetResultWorkflowResponse,
-  PostResultWorkflowRequest,
-} from '../dto/results-workflow.dto';
-import {
+  GetResultResponse,
   ManageResultRequest,
   UploadResultRequest,
   UploadResultResponse,
@@ -22,12 +19,13 @@ export class ResultsController {
   @ApiResponse({
     status: 200,
     description: 'Fetch the results in a department',
+    type: GetResultResponse,
   })
   @SwaggerAuth()
   async fetchResultsByDept(
     @Param('deptName') deptName: string,
     @Req() request: Request,
-  ) {
+  ): Promise<GetResultResponse> {
     const fabricToken = request.headers['fabricToken'] as string;
     return await fabricClient.fetchResult(fabricToken, deptName);
   }
@@ -46,37 +44,6 @@ export class ResultsController {
   ): Promise<UploadResultResponse> {
     const fabricToken = request.headers['fabricToken'] as string;
     return await fabricClient.uploadResult(fabricToken, body);
-  }
-
-  @Get('/workflow')
-  @ApiOperation({ summary: 'Fetch all result workflows in the contract' })
-  @ApiResponse({
-    status: 200,
-    description: 'Fetch the result workflows from the contract',
-    type: GetResultWorkflowResponse,
-  })
-  @SwaggerAuth()
-  async fetchResultWorkflow(
-    @Req() request: Request,
-  ): Promise<GetResultWorkflowResponse> {
-    const fabricToken = request.headers['fabricToken'] as string;
-    return await fabricClient.fetchResultWorkflow(fabricToken);
-  }
-
-  @Post('/workflow')
-  @ApiOperation({ summary: 'Post a new result workflow' })
-  @ApiResponse({
-    status: 201,
-    description: 'Save the result workflow in the contract',
-    type: GetResultWorkflowResponse,
-  })
-  @SwaggerAuth()
-  async saveResultWorkflow(
-    @Body() body: PostResultWorkflowRequest,
-    @Req() request: Request,
-  ): Promise<GetResultWorkflowResponse> {
-    const fabricToken = request.headers['fabricToken'] as string;
-    return await fabricClient.postResultWorkflow(fabricToken, body);
   }
 
   @Put('/manage/:result_id')
