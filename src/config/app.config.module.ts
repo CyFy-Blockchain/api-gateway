@@ -7,8 +7,6 @@ import {
   NestModule,
   Type,
 } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import databaseConfig from './ormconfig';
 import { ServerHealthCheckModule } from 'src/modules/server-health-check/server-health-check.module';
 import { RouterModule } from '@nestjs/core';
 import { AuthModule } from 'src/modules/auth/auth.module';
@@ -39,7 +37,7 @@ function getModuleWithPath(
 @Module({
   imports: [
     NestConfigModule,
-    TypeOrmModule.forRoot(databaseConfig),
+    // TypeOrmModule.forRoot(databaseConfig), // Uncomment this line to enable TypeORM
     ...getModuleWithPath('server-health-check', ServerHealthCheckModule),
     ...getModuleWithPath('auth', AuthModule),
     ...getModuleWithPath('results', ResultsModule),

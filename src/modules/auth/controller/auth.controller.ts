@@ -32,7 +32,7 @@ export class AuthController {
   @ApiResponse({
     status: 201,
     description: 'User has been registered successfully',
-    type: SigninUserResponse,
+    type: RegisterUserResponse,
   })
   @SwaggerAuth()
   async registerUser(
